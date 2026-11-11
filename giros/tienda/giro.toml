@@ -1,0 +1,15 @@
+# Lo único que cambia entre un giro y otro. Ver README → "Agregar un giro".
+negocio_demo = "Abarrotes El Puerto"
+archivo_demo = "ventas_tienda.xlsx"
+plantilla = "plantilla-tienda-farmacia.xlsx"
+inventario = true
+titulo_resurtir = "¿Qué conviene resurtir?"
+# Colores fijos por categoría, en este orden; las que no estén aquí toman los libres
+categorias = ["Abarrotes", "Bebidas", "Botanas", "Lácteos", "Limpieza"]
+
+[columnas]  # nombres de columna que el negocio ve en su Excel
+producto = "Producto"
+persona = "Cajero"
+
+[textos]
+productos = "productos"  # "Top 10 productos", "muy pocos productos para comparar"

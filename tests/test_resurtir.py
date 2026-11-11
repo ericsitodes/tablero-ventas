@@ -1,11 +1,8 @@
-"""Pruebas de la tabla de resurtido (solo en los tableros con hoja Inventario)."""
+"""Pruebas de la tabla de resurtido (giros con inventario = true)."""
 import pandas as pd
-import pytest
 
-import app
 from conftest import fila, ventas
-
-pytestmark = pytest.mark.skipif(not hasattr(app, "tabla_resurtir"), reason="este tablero no tiene inventario")
+from tablero import calculos, lectura
 
 
 def tabla():
@@ -20,7 +17,7 @@ def tabla():
         "Producto": ["C", "B", "A", "A", "D", "E"],
         "Existencia": [20, 10, 3, 2, 5, 5],  # A aparece dos veces: 3 + 2
     })
-    return app.tabla_resurtir(datos, app.limpiar_inventario(inventario)).set_index("Producto")
+    return calculos.tabla_resurtir(datos, lectura.limpiar_inventario(inventario)).set_index("Producto")
 
 
 def test_estados_por_dias_de_existencia():
@@ -48,7 +45,7 @@ def test_orden_del_mas_urgente_al_menos():
 def test_umbrales_exactos():
     # 7 días exactos ya no es Urgente; 15 exactos ya no es Pronto
     datos = ventas(fila("31/07/2026", 1, producto="X", cantidad=30), fila("31/07/2026", 2, producto="Y", cantidad=30))
-    inventario = pd.DataFrame({"Producto": ["X", "Y"], "Existencia": [app.DIAS_URGENTE, app.DIAS_PRONTO]})
-    t = app.tabla_resurtir(datos, inventario).set_index("Producto")
+    inventario = pd.DataFrame({"Producto": ["X", "Y"], "Existencia": [calculos.DIAS_URGENTE, calculos.DIAS_PRONTO]})
+    t = calculos.tabla_resurtir(datos, inventario).set_index("Producto")
     assert t.loc["X", "Estado"] == "Pronto"
     assert t.loc["Y", "Estado"] == "Suficiente"

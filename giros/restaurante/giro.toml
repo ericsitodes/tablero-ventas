@@ -1,0 +1,15 @@
+# Lo único que cambia entre un giro y otro. Ver README → "Agregar un giro".
+negocio_demo = "La Palapa del Golfo"
+archivo_demo = "ventas_restaurante.xlsx"
+plantilla = "plantilla-restaurante.xlsx"
+inventario = false  # sin hoja Inventario ni sección de resurtido
+titulo_resurtir = "¿Qué conviene resurtir?"
+# Colores fijos por categoría, en este orden; las que no estén aquí toman los libres
+categorias = ["Mariscos", "Platos fuertes", "Bebidas", "Entradas", "Postres"]
+
+[columnas]  # nombres de columna que el negocio ve en su Excel
+producto = "Platillo"
+persona = "Mesero"
+
+[textos]
+productos = "platillos"

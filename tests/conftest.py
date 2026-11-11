@@ -1,29 +1,36 @@
-"""Datos de prueba pequeños y armados a mano.
+"""Datos de prueba pequeños y armados a mano, y el giro como parámetro.
 
-Usan app.COLUMNAS_VENTAS, así que sirven igual para Producto/Cajero
-(tienda, farmacia) que para Platillo/Mesero (restaurante).
+Las pruebas que reciben `giro` corren una vez por cada carpeta de giros/.
+Las filas usan los nombres internos (Producto, Persona); para armar un
+Excel como el del negocio se usa giro.columnas_ventas.
 """
 from io import BytesIO
 
 import pandas as pd
+import pytest
 
-import app
+from tablero.giro import COLUMNAS_VENTAS, cargar_giro, giros_disponibles
+from tablero.lectura import limpiar_ventas
 
-COL_PRODUCTO = app.COLUMNAS_VENTAS[3]  # Producto o Platillo
-COL_PERSONA = app.COLUMNAS_VENTAS[9]   # Cajero o Mesero
+GIROS = giros_disponibles()
+
+
+@pytest.fixture(params=GIROS)
+def giro(request):
+    return cargar_giro(request.param)
 
 
 def fila(fecha, ticket, producto="Agua", cantidad=1, total=10.0, categoria="Bebidas",
          hora="12:00", metodo="Efectivo", persona="Ana"):
-    """Una fila cruda de la hoja Ventas, como vendría en el Excel."""
+    """Una fila cruda de la hoja Ventas, con los nombres internos de columna."""
     precio = total / cantidad if isinstance(total, (int, float)) and cantidad else total
     valores = [fecha, hora, ticket, producto, categoria, cantidad, precio, total, metodo, persona]
-    return dict(zip(app.COLUMNAS_VENTAS, valores))
+    return dict(zip(COLUMNAS_VENTAS, valores))
 
 
 def ventas(*filas):
     """Ventas ya limpias, como las recibe el tablero después de leer el Excel."""
-    return app.limpiar_ventas(pd.DataFrame(list(filas)), [])
+    return limpiar_ventas(pd.DataFrame(list(filas)), [])
 
 
 def gastos(**por_mes):

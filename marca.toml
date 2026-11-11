@@ -1,0 +1,4 @@
+# Datos de quien firma los tableros. Se usan en el pie de página y en los
+# enlaces de "escríbeme por WhatsApp" de los mensajes de error.
+nombre = "Eleva Dev"
+whatsapp = "529212223293"  # con 52 (México), sin espacios ni signos

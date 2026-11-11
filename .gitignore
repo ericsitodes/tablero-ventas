@@ -1,16 +1,17 @@
-# Datos: nunca subir Excel de clientes. Solo se permiten los archivos de ejemplo.
+# Datos: nunca subir Excel de clientes. Solo se permiten los de ejemplo de cada giro.
 *.xlsx
 *.xls
 *.csv
-!ventas_tienda.xlsx
-!plantilla-tienda-farmacia.xlsx
+!giros/*/ventas_*.xlsx
+!giros/*/plantilla*.xlsx
 
 # Python
 __pycache__/
 .venv/
 venv/
+.pytest_cache/
+.coverage
 
 # Secretos
 .env
 .streamlit/secrets.toml
-.pytest_cache/
