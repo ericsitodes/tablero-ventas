@@ -109,3 +109,7 @@ La app no escribe el archivo en disco ni lo manda a otro servicio. Se procesa en
 - **Utilidad:** ventas menos gastos. Si el rango cubre solo parte de un mes, el gasto de ese mes se reparte por días.
 - La utilidad y la gráfica de ingresos vs. gastos ignoran los filtros de categoría y método de pago, porque los gastos no se pueden repartir de esa forma.
 - **Resurtido:** existencia entre la venta diaria de los últimos 30 días del archivo. Es **Urgente** con menos de 7 días y **Pronto** con menos de 15. No cambia con los filtros.
+
+## Licencia
+
+Código propietario. Se puede ver, pero no copiar, modificar, redistribuir ni usar comercialmente sin autorización por escrito. Consulta [LICENSE](LICENSE).
