@@ -44,7 +44,7 @@ pip install -r requirements-dev.txt
 pytest -q
 ```
 
-Revisan que el Excel de ejemplo se lea bien y que se rechacen archivos que no son Excel o que al descomprimirse pasan de 120 MB (`LIMITE_DESCOMPRIMIDO` en `app.py`). `defusedxml` protege a openpyxl de archivos con XML malicioso.
+Cubren los cálculos del tablero (periodo anterior, reparto de gastos, utilidad, indicadores, filtros, resurtido y lectura de fechas y montos escritos de distintas formas). También revisan que el Excel de ejemplo se lea bien y que se rechacen archivos que no son Excel o que al descomprimirse pasan de 120 MB (`LIMITE_DESCOMPRIMIDO` en `app.py`). `defusedxml` protege a openpyxl de archivos con XML malicioso.
 
 ## Cómo se publica
 
