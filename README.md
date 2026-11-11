@@ -25,6 +25,8 @@ Se abre en http://localhost:8501. Para detenerlo, presiona `Ctrl + C` en la term
 | `plantilla-tienda-farmacia.xlsx` | Hoja para llenar que se descarga desde la barra lateral |
 | `.gitignore` | Evita subir Excel de clientes, entornos y secretos |
 | `requirements.txt` | Librerías que instala Streamlit Community Cloud |
+| `requirements-dev.txt` | Lo mismo más `pytest`, para correr las pruebas |
+| `tests/` | Pruebas automáticas |
 | `.streamlit/config.toml` | Colores del tema |
 
 ## Formato para subir tu propio Excel
@@ -34,6 +36,15 @@ Hoja **Ventas**: `Fecha`, `Hora`, `Ticket`, `Producto`, `Categoría`, `Cantidad`
 Hoja **Gastos**: `Mes` (cualquier fecha de ese mes), `Concepto`, `Monto`.
 
 Hoja **Inventario**: `Producto`, `Existencia`.
+
+## Pruebas
+
+```powershell
+pip install -r requirements-dev.txt
+pytest -q
+```
+
+Revisan que el Excel de ejemplo se lea bien y que se rechacen archivos que no son Excel o que al descomprimirse pasan de 120 MB (`LIMITE_DESCOMPRIMIDO` en `app.py`). `defusedxml` protege a openpyxl de archivos con XML malicioso.
 
 ## Cómo se publica
 

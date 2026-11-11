@@ -6,6 +6,7 @@ Uso: streamlit run app.py
 import calendar
 import re
 import unicodedata
+import zipfile
 from datetime import date, timedelta
 from io import BytesIO
 from pathlib import Path
@@ -22,6 +23,8 @@ NEGOCIO_VACIO = "Tu negocio"
 MIME_EXCEL = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 WHATSAPP = "https://wa.me/529212223293"
 LIMITE_FILAS = 200_000  # filas de la hoja Ventas; el tamaño lo limita config.toml (10 MB)
+# Un .xlsx es un ZIP: 10 MB comprimidos pueden ocupar cientos al abrirse. 200 000 filas son ~100 MB.
+LIMITE_DESCOMPRIMIDO = 120 * 1024 * 1024
 MENSAJE_ERROR = ("No pudimos leer tu archivo. Revisa que tenga el formato de la hoja para llenar "
                  f"o [escríbeme por WhatsApp]({WHATSAPP}).")
 
@@ -221,8 +224,25 @@ def revisar_tamano(filas):
                             f"o [escríbeme por WhatsApp]({WHATSAPP}).")
 
 
+def revisar_zip(contenido):
+    """Rechaza el archivo si al descomprimirse pasa de LIMITE_DESCOMPRIMIDO.
+
+    zipfile nunca entrega más bytes de los que el archivo declara (si miente,
+    falla el CRC), así que la suma declarada es un tope confiable de memoria.
+    """
+    try:
+        with zipfile.ZipFile(BytesIO(contenido)) as libro:
+            total = sum(parte.file_size for parte in libro.infolist())
+    except zipfile.BadZipFile as error:
+        raise ErrorFormato("El archivo no se pudo abrir como Excel (.xlsx).") from error
+    if total > LIMITE_DESCOMPRIMIDO:
+        raise ArchivoGrande("Tu archivo es demasiado grande para el tablero. Sube un periodo más corto, "
+                            f"por ejemplo unos meses, o [escríbeme por WhatsApp]({WHATSAPP}).")
+
+
 def leer_libro(contenido):
     """Recibe los bytes del Excel y devuelve (ventas, gastos por mes, inventario, avisos)."""
+    revisar_zip(contenido)
     filas = contar_filas(contenido)
     revisar_tamano(filas - 1 if filas else None)  # sin contar los títulos
     try:

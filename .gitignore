@@ -13,3 +13,4 @@ venv/
 # Secretos
 .env
 .streamlit/secrets.toml
+.pytest_cache/
